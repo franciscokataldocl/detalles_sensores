@@ -1,24 +1,24 @@
-#define AO_PIN 27 // Pin de conexion del sensor
+#define AO_PIN 27 // Pin donde conectaste el sensor
 
 void setup() {
   Serial.begin(115200);
 }
 
 void loop() {
-  int rawValue = analogRead(AO_PIN);
-  float voltage = (rawValue / 4095.0) * 3.0; // Usamos 3V
+  int rawValue = analogRead(AO_PIN);  // Leer el valor analógico
 
-  // Invertimos la relación entre los valores analógicos y la humedad
-  int humidity = map(rawValue, 1136, 4095, 0, 100); // Invertido el rango
-  humidity = constrain(humidity, 0, 100); // Asegurarnos que la humedad esté entre 0 y 100
-
+  // Imprimir el valor en bruto para que puedas observar los cambios más fácilmente
   Serial.print("Raw Value: ");
-  Serial.print(rawValue);
-  Serial.print(" - Voltage: ");
-  Serial.print(voltage);
-  Serial.print("V - Humedad: ");
-  Serial.print(humidity);
-  Serial.println("%");
+  Serial.println(rawValue);
+
+  // Determinar la condición de humedad (simple ejemplo)
+  if (rawValue > 3400) {
+    Serial.println("Tierra seca o ligeramente humeda");
+  } else if (rawValue > 3300 && rawValue <= 3400) {
+    Serial.println("Tierra moderadamente humeda");
+  } else {
+    Serial.println("Tierra muy humeda");
+  }
 
   delay(1000); // Leer cada segundo
 }
